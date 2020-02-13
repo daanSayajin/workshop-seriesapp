@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import SeriesForm from './SeriesForm'
-import SeriesTable from './SeriesTable'
+import SeriesCards from './SeriesCards'
 
 class SeriesBox extends Component {
     
@@ -47,11 +47,28 @@ class SeriesBox extends Component {
         }
     }
 
+    delete = async id => {
+        const res = await fetch('http://localhost:3000/series/' + id, { method: 'DELETE' })
+
+        if (res.status !== 204) 
+            return console.log('Failed to delete')
+
+        this.setState({
+            series: this.state.series.filter(serie => serie.id !== id)
+        })
+    }   
+
     render() {
         return (
-            <div>
-                <SeriesForm handleSubmit={this.handleSubmit} />
-                <SeriesTable series={this.state.series} />
+            <div className="container-fluid">
+                <div className="row">
+                    <div className="col-md-4">
+                        <SeriesForm handleSubmit={this.handleSubmit} />
+                    </div>
+                    <div className="col-md-8">
+                        <SeriesCards series={this.state.series} delete={this.delete} />
+                    </div>
+                </div>
             </div>
         )
     }

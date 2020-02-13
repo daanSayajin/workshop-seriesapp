@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 
 import './App.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
+import Navbar from './components/Navbar'
 import SeriesBox from './components/series/SeriesBox'
 
 class App extends Component {
@@ -9,8 +11,7 @@ class App extends Component {
     render() {
         return (
             <div className="App">
-                <h1>CADASTRO DE SÉRIES</h1>
-             
+                <Navbar />
                 <SeriesBox />
             </div>
         )
