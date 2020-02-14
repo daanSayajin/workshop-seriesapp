@@ -32,7 +32,7 @@ const Cards = props => {
                             </button>
                             
                             <button className="btn btn-outline-warning btn-sm mt-2"
-
+                                onClick={() => props.changeSerieState(serie)}
                             >
                                 Editar
                             </button>
@@ -53,7 +53,11 @@ class SeriesCards extends Component {
                     Lista de Séries
                 </h5>
 
-                <Cards series={this.props.series} delete={this.props.delete} />
+                <Cards 
+                    series={this.props.series} 
+                    delete={this.props.delete} 
+                    changeSerieState={this.props.changeSerieState}
+                />
             </div>
         )
     }

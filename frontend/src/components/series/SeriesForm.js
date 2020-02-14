@@ -2,33 +2,22 @@ import React, { Component } from 'react'
 
 class SeriesForm extends Component {
 
-    constructor() {
-        super()
-
-        this.stateInitial = {
-            nome: '',
-            ano_lancamento: '',
-            temporadas: '',
-            sinopse: ''
-        }
-
-        this.state = this.stateInitial
-    }
-
     inputHandler = e => {
         const { id, value } = e.target
 
-        this.setState({ [id]: value })
+        this.props.inputHandler(id, value)
     }
 
     handleSubmit = e => {
         e.preventDefault()
 
-        this.props.handleSubmit(this.state)
-        this.setState(this.stateInitial)
+        this.props.handleSubmit()
     }
 
     render() {
+
+        const { serie } = this.props
+
         return (
             <div className="card">
                 <h5 className="card-header">
@@ -43,25 +32,25 @@ class SeriesForm extends Component {
                         <label htmlFor="nome">Nome</label>
                         <input type="text" id="nome" className="form-control mb-2" 
                             onChange={this.inputHandler} 
-                            value={this.state.nome}    
+                            value={serie.nome}    
                         />
 
                         <label htmlFor="ano_lancamento">Ano de Lançamento</label>
                         <input type="number" id="ano_lancamento" className="form-control mb-2" 
                             onChange={this.inputHandler}
-                            value={this.state.ano_lancamento}
+                            value={serie.ano_lancamento}
                         />
 
                         <label htmlFor="temporadas">Temporadas</label>
                         <input type="number" id="temporadas" className="form-control mb-2" 
                             onChange={this.inputHandler}
-                            value={this.state.temporadas}
+                            value={serie.temporadas}
                         />
 
                         <label htmlFor="sinopse">Sinopse</label>
                         <textarea id="sinopse" className="form-control mb-4" 
                             onChange={this.inputHandler}
-                            value={this.state.sinopse}    
+                            value={serie.sinopse}    
                         >
                         </textarea>
 
