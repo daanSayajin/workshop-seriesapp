@@ -53,7 +53,7 @@ class SeriesBox extends Component {
             body: JSON.stringify(serie)
         }
 
-        let res = await fetch('http://localhost:3000/series/' + serie.id || '', params)
+        let res = await fetch(`http://localhost:3000/series/${serie.id || ''}`, params)
 
         if (res.status === 201) {
             serie = await res.json()
