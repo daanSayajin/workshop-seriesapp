@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
+import PubSub from 'pubsub-js'
 
 import './SeriesCards.css'
 
@@ -20,7 +22,7 @@ const Cards = props => {
                         <div className="card-footer">
                             {serie.temporadas}
                             {serie.temporadas > 1 ? ' temporadas - ' : ' temporada - '}
-                            <a href="#"> Sinopse </a>
+                            <Link to="#"> Sinopse </Link>
 
                             <button className="btn btn-outline-danger btn-sm mt-2 mr-2"
                                 onClick={() => {
@@ -32,7 +34,9 @@ const Cards = props => {
                             </button>
                             
                             <button className="btn btn-outline-warning btn-sm mt-2"
-
+                                onClick={() => {
+                                    PubSub.publish('editing', serie)
+                                }}
                             >
                                 Editar
                             </button>
@@ -48,7 +52,7 @@ class SeriesCards extends Component {
 
     render() {
         return (
-            <div className="card">
+            <div className="card mb-3">
                 <h5 className="card-header text-center">
                     Lista de Séries
                 </h5>

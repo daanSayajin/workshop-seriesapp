@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PubSub from 'pubsub-js'
 
 class SeriesForm extends Component {
 
@@ -6,6 +7,7 @@ class SeriesForm extends Component {
         super()
 
         this.stateInitial = {
+            id: null,
             nome: '',
             ano_lancamento: '',
             temporadas: '',
@@ -13,6 +15,10 @@ class SeriesForm extends Component {
         }
 
         this.state = this.stateInitial
+
+        PubSub.subscribe('editing', (msg, serie) => {
+            this.setState(serie) 
+        })
     }
 
     inputHandler = e => {
@@ -30,14 +36,14 @@ class SeriesForm extends Component {
 
     render() {
         return (
-            <div className="card">
+            <div className="card mb-3">
                 <h5 className="card-header">
                     Cadastro de séries
                 </h5>
 
                 <form 
-                    onSubmit={this.handleSubmit}
                     className="card-body"
+                    onSubmit={this.handleSubmit}
                 >
                     <div className="form-group">
                         <label htmlFor="nome">Nome</label>

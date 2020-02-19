@@ -22,28 +22,31 @@ class SeriesBox extends Component {
     }
 
     handleSubmit = async serie => {
+
         const params = {
-            method: 'POST',
+            method: serie.id ? 'PUT' : 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(serie)
         }
+         
+        let res = await fetch(`http://localhost:3000/series/${serie.id || ''}`, params)
 
-        try {
-            let res = await fetch('http://localhost:3000/series', params)
-            
-            if (res.status !== 201) {
-                return console.log('Failed to post')
-            }
-
+        if (res.status === 201) {
             serie = await res.json()
 
             this.setState({
                 series: [...this.state.series, serie]
             })
-        } catch (e) {
-            console.log(e)
+        }
+
+        else if (res.status === 200) {
+            serie = await res.json()
+
+            this.setState({
+                series: this.state.series.map(s => s.id === parseInt(serie.id) ? serie : s)
+            })
         }
     }
 
