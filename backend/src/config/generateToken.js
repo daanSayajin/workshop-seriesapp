@@ -3,6 +3,6 @@ const { secret } = require('../config/auth')
 
 module.exports = (params) => {
     return jwt.sign(params, secret, {
-        expiresIn: 60
+        expiresIn: 900
     })
 }

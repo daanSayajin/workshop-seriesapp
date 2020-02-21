@@ -41,6 +41,8 @@ module.exports = {
             if (!await bcrypt.compare(senha, user[0].senha))
                 return res.status(400).json({ error: 'invalid password' })
 
+            delete user[0].senha
+
             return res.status(200).json({ 
                 ...user[0],
                 token: generateToken({ id: user[0].id })

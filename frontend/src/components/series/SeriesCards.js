@@ -5,6 +5,11 @@ import PubSub from 'pubsub-js'
 import './SeriesCards.css'
 
 const Cards = props => {
+
+    if (props.series.error) {
+        return <h1 className="text-center mt-3 mb-3">Token expirado!</h1>
+    }
+
     return (
         <div className="card-body card-body-flex">
             {props.series.map(serie => {
@@ -49,7 +54,6 @@ const Cards = props => {
 }
 
 class SeriesCards extends Component {
-
     render() {
         return (
             <div className="card mb-3">

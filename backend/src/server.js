@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 
 const auth = require('./middlewares/auth')
 
@@ -9,13 +10,17 @@ const app = express()
 
 app.use(express.json())
 
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*')
-    res.header('Access-Control-Allow-Headers', '*')
-    res.header('Access-Control-Allow-Methods', '*')
+app.use(cors())
 
-    return next()
-})
+// app.use((req, res, next) => {
+//     res.header('Access-Control-Allow-Origin', '*')
+//     res.header('Access-Control-Allow-Headers', '*')
+//     res.header('Access-Control-Allow-Methods', '*')
+//     res.header('Access-Control-Allow-Credentials', true)
+//     res.header('Access-Control-Max-Age', '3600')
+
+//     return next()
+// })
 
 app.use('/usuarios', userRoutes)
 

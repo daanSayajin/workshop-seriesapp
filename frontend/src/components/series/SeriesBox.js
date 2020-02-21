@@ -3,6 +3,8 @@ import React, { Component } from 'react'
 import SeriesForm from './SeriesForm'
 import SeriesCards from './SeriesCards'
 
+import { list, insert, update, remove } from '../../services/seriesService'
+
 class SeriesBox extends Component {
     
     constructor() {
@@ -14,24 +16,29 @@ class SeriesBox extends Component {
     }
 
     async componentDidMount() {
-        const series = await (await fetch('http://localhost:3000/series')).json()
+        let series
 
-        this.setState({
-            series
-        })
+        try {
+            const res = await list() 
+            series = await res.json()
+        } catch(e) {
+            return console.log(e)
+        }
+
+        this.setState({ series })
     }
 
     handleSubmit = async serie => {
+        let res 
 
-        const params = {
-            method: serie.id ? 'PUT' : 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(serie)
+        try {
+            if (serie.id) 
+                res = await update(serie)
+            else 
+                res = await insert(serie)
+        } catch(e) {
+            return console.log(e)
         }
-         
-        let res = await fetch(`http://localhost:3000/series/${serie.id || ''}`, params)
 
         if (res.status === 201) {
             serie = await res.json()
@@ -51,8 +58,8 @@ class SeriesBox extends Component {
     }
 
     delete = async id => {
-        const res = await fetch('http://localhost:3000/series/' + id, { method: 'DELETE' })
-
+        const res = await remove(id) 
+        
         if (res.status !== 204) 
             return console.log('Failed to delete')
 

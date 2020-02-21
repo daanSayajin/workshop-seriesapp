@@ -1,5 +1,19 @@
 import React, { Component } from 'react'
 
+import { signIn } from '../../services/authService'
+
+const ErrorMessage = ({ message }) => {
+    return (
+        message ? (
+            <div>
+                <div className="alert alert-danger mt-3">
+                    {message}
+                </div>
+            </div>
+        ) : ('')
+    )
+}
+
 class Login extends Component {
 
     constructor() {
@@ -7,7 +21,8 @@ class Login extends Component {
 
         this.state = {
             email: '',
-            senha: ''
+            senha: '',
+            errorMessage: null
         }
     }
 
@@ -22,38 +37,30 @@ class Login extends Component {
 
         const { email, senha } = this.state
 
-        const params = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email, senha })
-        }
-
-        const res = await fetch('http://localhost:3000/usuarios/autenticar', params)
+        const res = await signIn({ email, senha })
        
-        if (res.status === 400) {
-            return console.log('Usuário ou senha inválido.')
+        if (!res) 
+            return this.setState({ errorMessage: 'E-mail e/ou senha inválidos.' })
+        else if (res) {
+            this.setState({ errorMessage: null })
+            this.props.history.push('/')
         }
-
-        const user = await res.json()
-        console.log(user)
     }
 
     render() {
         return (
-            <div className="container-fluid">
+            <div className="container-fluid mt-5">
                 <div className="row">
                     <div className="col-md-4"></div>
-                    <div className="col-md-4">
-                        <div className="card">
+                    <div className="col-md-4">                        
+                        <div className="">
                             <h5 className="card-header">
                                 Login
                             </h5>
 
                             <form className="card-body" onSubmit={this.handleLogin}> 
                                 <div className="form-group">
-                                    <label htmlFor="email">Email</label>
+                                    <label htmlFor="email">E-mail</label>
                                     <input type="email" className="form-control" id="email" aria-describedby="emailHelp"
                                         onChange={this.inputHandler}
                                         value={this.state.email}
@@ -68,6 +75,8 @@ class Login extends Component {
                                     />
                                 </div>
                                 <button type="submit" className="btn btn-primary">Entrar</button>
+
+                                <ErrorMessage message={this.state.errorMessage} />
                             </form>
                         </div>
                     </div>
