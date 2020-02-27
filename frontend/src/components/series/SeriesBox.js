@@ -52,7 +52,7 @@ class SeriesBox extends Component {
             serie = await res.json()
 
             this.setState({
-                series: this.state.series.map(s => s.id === parseInt(serie.id) ? serie : s)
+                series: this.state.series.map(s => +s.id === +serie.id ? serie : s)
             })
         }
     }

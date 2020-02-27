@@ -21,13 +21,15 @@ const Cards = props => {
                         </div>
 
                         <div className="card-body">
-                            <img src="/logo192.png" alt={serie.nome} className="card-img" />
+                            <img src="/logo512.png" alt={serie.nome} className="card-img" />
                         </div>
 
                         <div className="card-footer">
                             {serie.temporadas}
                             {serie.temporadas > 1 ? ' temporadas - ' : ' temporada - '}
-                            <Link to="#"> Sinopse </Link>
+                            <Link to="#" data-toggle="modal" data-target="#exampleModalCenter" onClick={() => {
+                                PubSub.publish('detail', serie)
+                            }}> Sinopse </Link>
 
                             <button className="btn btn-outline-danger btn-sm mt-2 mr-2"
                                 onClick={() => {
@@ -54,9 +56,49 @@ const Cards = props => {
 }
 
 class SeriesCards extends Component {
+
+    constructor() {
+        super()
+
+        this.state = {
+            serieDetail: ''
+        }
+
+        PubSub.subscribe('detail', (msg, serie) => {
+            this.setState({ serieDetail: serie })
+        })
+    }
+
     render() {
+
+        const { serieDetail } = this.state 
+
         return (
             <div className="card mb-3">
+                <div className="modal fade" id="exampleModalCenter" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div className="modal-dialog modal-dialog-centered" role="document">
+                        <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="exampleModalLongTitle">{serieDetail.nome}</h5>
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div className="modal-body">
+                            <img src="/logo512.png" alt={serieDetail.nome} className="card-img" />
+                            {serieDetail.temporadas}
+                            {serieDetail.temporadas > 1 ? ' temporadas' : ' temporada'}
+                            <br />
+                            {serieDetail.ano_lancamento}
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" className="btn btn-primary">Save changes</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
                 <h5 className="card-header text-center">
                     Lista de Séries
                 </h5>
