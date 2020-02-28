@@ -31,11 +31,26 @@ class SeriesBox extends Component {
     handleSubmit = async serie => {
         let res 
 
+        const data = new FormData()
+
+        data.append('id', serie.id)
+        data.append('nome', serie.nome)
+        data.append('ano_lancamento', serie.ano_lancamento)
+        data.append('temporadas', serie.temporadas)
+        data.append('sinopse', serie.sinopse)
+        data.append('imagem', serie.imagem)
+        data.append('generos', JSON.stringify(serie.generos.map(genero => {
+            return {
+                id: genero.value,
+                genero: genero.label
+            }
+        })))
+
         try {
             if (serie.id) 
-                res = await update(serie)
+                res = await update(data)
             else 
-                res = await insert(serie)
+                res = await insert(data)
         } catch(e) {
             return console.log(e)
         }

@@ -7,7 +7,7 @@ const list = async () => {
 }
 
 const insert = async serie => {
-    return await doRequest(RESOURCE, 'POST', serie)
+    return await doRequest(RESOURCE, 'POST', serie, '', true)
 }
 
 const remove = async id => {
@@ -15,7 +15,7 @@ const remove = async id => {
 }
 
 const update = async serie => {
-    return await doRequest(RESOURCE, 'PUT', serie, serie.id)
+    return await doRequest(RESOURCE, 'PUT', serie, serie.get('id'), true)
 }
 
 export { list, insert, remove, update }

@@ -8,7 +8,7 @@ const signIn = async user => {
         const res = await doPublicRequest(RESOURCE + '/autenticar', 'POST', user)
 
         if (res.status === 400) {
-            return res
+            return false
         }
 
         else if (res.ok) {

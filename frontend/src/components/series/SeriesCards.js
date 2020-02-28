@@ -20,8 +20,8 @@ const Cards = props => {
                             <h6 className="card-title text-muted"> {serie.ano_lancamento} </h6>
                         </div>
 
-                        <div className="card-body">
-                            <img src="/logo512.png" alt={serie.nome} className="card-img" />
+                        <div className="card-body" style={{ display: 'flex', alignItems: 'center' }} >
+                            <img src={serie.imagem === '' ? '/logo512.png' : `http://localhost:3000/${serie.imagem}`} alt={serie.nome} className="card-img" />
                         </div>
 
                         <div className="card-footer">
@@ -70,7 +70,6 @@ class SeriesCards extends Component {
     }
 
     render() {
-
         const { serieDetail } = this.state 
 
         return (
@@ -85,15 +84,25 @@ class SeriesCards extends Component {
                             </button>
                         </div>
                         <div className="modal-body">
-                            <img src="/logo512.png" alt={serieDetail.nome} className="card-img" />
+                            <img src={serieDetail.imagem ? `http://localhost:3000/${serieDetail.imagem}` : '/logo512.png'}  alt={serieDetail.nome} className="card-img mb-2" />
                             {serieDetail.temporadas}
-                            {serieDetail.temporadas > 1 ? ' temporadas' : ' temporada'}
+                            {serieDetail.temporadas > 1 ? ' temporadas' : ' temporada'} - <span className="text-muted">{serieDetail.ano_lancamento}</span>
                             <br />
-                            {serieDetail.ano_lancamento}
+                            <br />
+                            {serieDetail.sinopse}
+                            <br />
+                            <br />
+                            {serieDetail.generos ? serieDetail.generos.reduce((prev, genero) => (
+                                <>
+                                    {prev}
+                                    <span className="card-header p-2 mr-2 bg-dark text-white">
+                                        {genero.genero}
+                                    </span>
+                                </>
+                            ), '') : ''}
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary">Save changes</button>
                         </div>
                         </div>
                     </div>

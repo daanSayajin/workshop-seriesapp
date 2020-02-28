@@ -2,7 +2,7 @@ import { getToken } from './authService'
 
 const URL = 'http://localhost:3000'
 
-const doRequest = async (resource, method, body = '', urlParam = '') => {
+const doRequest = async (resource, method, body = '', urlParam = '', isFormData) => {
     const params = {
         method,
         headers: {
@@ -11,7 +11,8 @@ const doRequest = async (resource, method, body = '', urlParam = '') => {
         }
     }
 
-    if (!['GET', 'DELETE'].includes(method)) params.body = JSON.stringify(body)
+    if (isFormData) delete params.headers['Content-Type']
+    if (!['GET', 'DELETE'].includes(method)) params.body = isFormData ? body : JSON.stringify(body)
         
     return await fetch(URL + resource + '/' + urlParam, params)
 }
